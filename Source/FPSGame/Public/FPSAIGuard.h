@@ -7,6 +7,8 @@
 #include "FPSAIGuard.generated.h"
 
 class UPawnSensingComponent;
+class UPawnMovementComponent;
+
 
 UENUM(BlueprintType)
 enum class EAIState : uint8
@@ -32,6 +34,19 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UPawnSensingComponent* PawnSensingComp;
 
+	UPROPERTY(EditInstanceOnly, Category = "AI")
+	bool bPatrol;
+
+	UPROPERTY(EditInstanceOnly, Category = "AI", meta = (EditCondition="bPatrol"))
+	AActor* PatrolTarget1;
+
+	UPROPERTY(EditInstanceOnly, Category = "AI", meta = (EditCondition="bPatrol"))
+	AActor* PatrolTarget2;
+
+	AActor* CurrentPatrolPoint;
+
+	void MoveToNextPatrolPoint();
+
 	UFUNCTION()
 	void OnPawnSeen(APawn* SeenPawn);
 
@@ -46,7 +61,6 @@ protected:
 	void ResetOrientation();
 
 	EAIState GuardState;
-
 
 	void SetGuardState(EAIState NewState);
 
